@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="bn" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>PowerBangla — পশ্চিমবঙ্গের নিজের খবর</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&family=Rajdhani:wght@600;700&family=Lora:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#0a3d8f;--blue-dark:#062a6b;--blue-mid:#1a5bb8;
+  --blue-light:#e8f0fc;--accent:#e8171f;--gold:#d4a017;
+  --bg:#f5f6fa;--white:#fff;--text:#111827;--muted:#6b7280;
+  --border:#e2e6f0;--card:#fff;--shadow:0 1px 8px rgba(10,61,143,.08);
+  --nav-bg:#0a3d8f;--nav-text:#c5d8ff;--header-bg:#fff;
+}
+[data-theme="dark"]{
+  --bg:#0f1117;--white:#1a1d27;--text:#e5e7eb;--muted:#9ca3af;
+  --border:#2d3147;--card:#1a1d27;--shadow:0 1px 8px rgba(0,0,0,.3);
+  --blue-light:#1a2540;--header-bg:#1a1d27;--nav-bg:#062a6b;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html{scroll-behavior:smooth;}
+body{font-family:'Noto Sans Bengali',sans-serif;background:var(--bg);color:var(--text);transition:background .3s,color .3s;font-size:15px;overflow-x:hidden;}
+a{text-decoration:none;color:inherit;}
+img{display:block;width:100%;object-fit:cover;}
+.container{max-width:1200px;margin:0 auto;padding:0 14px;}
+
+/* ====== HEADER ====== */
+header{background:var(--header-bg);border-bottom:3px solid var(--blue);box-shadow:var(--shadow);position:relative;z-index:300;transition:background .3s;}
+.header-inner{display:flex;align-items:center;justify-content:space-between;padding:11px 0;gap:8px;}
+.logo{display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none;flex-shrink:0;}
+.logo-icon svg{width:46px;height:46px;}
+.logo-text .name{font-family:'Rajdhani',sans-serif;font-size:30px;font-weight:700;color:var(--blue-dark);letter-spacing:-.5px;line-height:1;}
+[data-theme="dark"] .logo-text .name{color:#7eb3ff;}
+.logo-text .name span{color:var(--accent);}
+.logo-text .tag{font-size:10px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;}
+.header-right{display:flex;align-items:center;gap:7px;flex-shrink:0;}
+
+/* Search */
+.search-wrap{position:relative;}
+.search-box{display:flex;align-items:center;gap:6px;background:var(--bg);border:1.5px solid var(--border);border-radius:22px;padding:6px 12px;transition:border-color .2s;width:180px;}
+@media(max-width:480px){.search-box{width:120px;}}
+.search-box:focus-within{border-color:var(--blue);}
+.search-box input{border:none;background:transparent;outline:none;font-family:'Noto Sans Bengali',sans-serif;font-size:12px;width:100%;color:var(--text);}
+.search-box svg{width:14px;height:14px;stroke:var(--muted);flex-shrink:0;}
+.search-results{display:none;position:absolute;top:calc(100% + 6px);left:0;right:0;min-width:260px;background:var(--card);border:1.5px solid var(--border);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.15);z-index:400;max-height:300px;overflow-y:auto;}
+.search-results.show{display:block;}
+.sr-item{padding:10px 14px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s;}
+.sr-item:last-child{border-bottom:none;}
+.sr-item:hover{background:var(--blue-light);}
+.sr-cat{font-size:10px;font-weight:700;color:var(--blue-mid);text-transform:uppercase;letter-spacing:.7px;margin-bottom:2px;}
+.sr-item h5{font-size:13px;font-weight:700;line-height:1.4;}
+.sr-empty{padding:16px;text-align:center;color:var(--muted);font-size:13px;}
+
+/* Dark mode */
+.dm-btn{background:var(--bg);border:1.5px solid var(--border);border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;transition:background .2s;flex-shrink:0;}
+
+/* Login */
+.login-btn{background:var(--blue);color:#fff;padding:8px 16px;border-radius:6px;font-weight:700;font-size:13px;border:none;cursor:pointer;font-family:'Noto Sans Bengali',sans-serif;transition:background .2s;display:flex;align-items:center;gap:5px;white-space:nowrap;flex-shrink:0;}
+.login-btn:hover{background:var(--blue-dark);}
+.login-btn svg{width:13px;height:13px;}
+
+/* ====== HAMBURGER ====== */
+.ham-wrap{position:relative;flex-shrink:0;}
+.ham-btn{background:none;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;padding:7px 9px;display:flex;flex-direction:column;gap:4px;justify-content:center;transition:border-color .2s,background .2s;}
+.ham-btn:hover{border-color:var(--blue);background:var(--blue-light);}
+.ham-btn span{display:block;width:20px;height:2px;background:var(--blue);border-radius:2px;transition:all .3s;}
+[data-theme="dark"] .ham-btn span{background:#7eb3ff;}
+.ham-btn.open span:nth-child(1){transform:translateY(6px) rotate(45deg);}
+.ham-btn.open span:nth-child(2){opacity:0;transform:scaleX(0);}
+.ham-btn.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg);}
+
+/* ====== SIDE DRAWER ====== */
+.drawer-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:800;backdrop-filter:blur(2px);}
+.drawer-overlay.open{display:block;}
+.drawer{position:fixed;top:0;right:-320px;width:300px;height:100vh;background:var(--card);z-index:900;transition:right .3s cubic-bezier(.4,0,.2,1);overflow-y:auto;box-shadow:-8px 0 32px rgba(0,0,0,.2);}
+.drawer.open{right:0;}
+
+/* Drawer Header */
+.drawer-head{background:linear-gradient(135deg,var(--blue-dark),var(--blue-mid));padding:20px 18px;display:flex;align-items:center;justify-content:space-between;}
+.drawer-head .dh-logo{display:flex;align-items:center;gap:8px;}
+.drawer-head .dh-name{font-family:'Rajdhani',sans-serif;font-size:20px;font-weight:700;color:#fff;}
+.drawer-head .dh-name span{color:#ff6b6b;}
+.drawer-head .dh-tag{font-size:10px;color:rgba(255,255,255,.7);letter-spacing:1px;text-transform:uppercase;margin-top:2px;}
+.drawer-close{background:rgba(255,255,255,.15);border:none;color:#fff;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+.drawer-close:hover{background:rgba(255,255,255,.3);}
+
+/* Drawer Section Label */
+.drawer-label{font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;padding:14px 18px 6px;}
+
+/* Drawer Menu Items */
+.drawer-item{display:flex;align-items:center;gap:13px;padding:13px 18px;cursor:pointer;transition:background .15s;border-bottom:1px solid var(--border);text-decoration:none;color:var(--text);}
+.drawer-item:hover{background:var(--blue-light);}
+.drawer-item:active{background:var(--blue-light);}
+
+/* Icon Box — modern colorful */
+.di-box{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.15);}
+.di-box svg{width:22px;height:22px;}
+.dib-home{background:linear-gradient(135deg,#667eea,#764ba2);}
+.dib-news{background:linear-gradient(135deg,#f093fb,#f5576c);}
+.dib-lifestyle{background:linear-gradient(135deg,#4facfe,#00f2fe);}
+.dib-job{background:linear-gradient(135deg,#43e97b,#38f9d7);}
+.dib-scholarship{background:linear-gradient(135deg,#fa709a,#fee140);}
+.dib-education{background:linear-gradient(135deg,#a18cd1,#fbc2eb);}
+.dib-govt{background:linear-gradient(135deg,#f77062,#fe5196);}
+.dib-wb{background:linear-gradient(135deg,#0ba360,#3cba92);}
+.dib-about{background:linear-gradient(135deg,#8e2de2,#4a00e0);}
+.dib-contact{background:linear-gradient(135deg,#f7971e,#ffd200);}
+
+.di-text .di-title{font-size:14px;font-weight:700;color:var(--text);}
+.di-text .di-sub{font-size:11px;color:var(--muted);margin-top:1px;}
+.di-arrow{margin-left:auto;color:var(--muted);}
+.di-arrow svg{width:14px;height:14px;}
+
+/* Drawer Footer */
+.drawer-footer{padding:18px;border-top:1px solid var(--border);margin-top:8px;}
+.drawer-footer p{font-size:12px;color:var(--muted);text-align:center;line-height:1.6;}
+.drawer-footer a{color:var(--gold);}
+
+/* ====== NAV ====== */
+nav{background:var(--nav-bg);position:sticky;top:0;z-index:200;box-shadow:0 3px 10px rgba(6,42,107,.25);transition:background .3s;}
+.nav-inner{display:flex;align-items:stretch;overflow-x:auto;scrollbar-width:none;}
+.nav-inner::-webkit-scrollbar{display:none;}
+nav a{color:var(--nav-text);font-size:13px;font-weight:600;padding:12px 14px;white-space:nowrap;display:flex;align-items:center;transition:all .2s;border-bottom:3px solid transparent;}
+nav a:hover,nav a.active{color:#fff;background:rgba(255,255,255,.1);border-bottom-color:var(--gold);}
+nav a.active{color:var(--gold);}
+
+/* ====== MAIN LAYOUT ====== */
+.main-layout{display:grid;grid-template-columns:1fr 300px;gap:20px;margin:20px 0 28px;}
+@media(max-width:960px){.main-layout{display:block;}}
+.sidebar{display:flex;flex-direction:column;gap:16px;}
+@media(max-width:960px){.sidebar{margin-top:20px;}}
+
+/* ====== SEC HEADER ====== */
+.sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding-bottom:9px;border-bottom:2.5px solid var(--blue);}
+.sh h2{font-family:'Lora',serif;font-size:16px;font-weight:700;color:var(--blue-dark);display:flex;align-items:center;gap:8px;}
+[data-theme="dark"] .sh h2{color:#7eb3ff;}
+.sh h2::before{content:'';display:inline-block;width:4px;height:18px;background:var(--accent);border-radius:2px;flex-shrink:0;}
+.sh a{font-size:12px;color:var(--blue-mid);font-weight:600;}
+
+/* ====== HERO ====== */
+.hero{background:var(--card);border-radius:10px;overflow:hidden;margin-bottom:20px;box-shadow:var(--shadow);}
+.hero-grid{display:grid;grid-template-columns:1.5fr 1fr;}
+@media(max-width:700px){.hero-grid{grid-template-columns:1fr;}}
+.hero-main{position:relative;cursor:pointer;}
+.hero-img{height:290px;position:relative;overflow:hidden;background:linear-gradient(160deg,#062a6b,#0a3d8f 45%,#1565c0);}
+@media(max-width:480px){.hero-img{height:220px;}}
+.hero-img-bg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:.1;}
+.hero-badge{position:absolute;top:12px;left:12px;background:var(--accent);color:#fff;font-size:11px;font-weight:800;padding:3px 10px;border-radius:4px;z-index:2;}
+.hero-grad{position:absolute;bottom:0;left:0;right:0;height:175px;background:linear-gradient(to top,rgba(0,0,0,.82),transparent);z-index:1;}
+.hero-caption{position:absolute;bottom:0;left:0;right:0;padding:16px;z-index:2;}
+.hero-caption h3{font-family:'Lora',serif;color:#fff;font-size:17px;font-weight:700;line-height:1.45;text-shadow:0 1px 4px rgba(0,0,0,.4);}
+@media(max-width:480px){.hero-caption h3{font-size:14px;}}
+.hero-caption .meta{color:rgba(255,255,255,.72);font-size:11px;margin-top:5px;}
+.hero-side{border-left:1px solid var(--border);display:flex;flex-direction:column;}
+@media(max-width:700px){.hero-side{border-left:none;border-top:1px solid var(--border);flex-direction:row;flex-wrap:wrap;}}
+.hsi{padding:12px 14px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s;flex:1;display:flex;flex-direction:column;justify-content:center;}
+@media(max-width:700px){.hsi{flex:1 1 48%;}}
+@media(max-width:400px){.hsi{flex:1 1 100%;}}
+.hsi:last-child{border-bottom:none;}
+.hsi:hover{background:var(--blue-light);}
+.hsi .cat{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;}
+.hsi h4{font-family:'Lora',serif;font-size:13px;font-weight:600;line-height:1.44;}
+.hsi .t{font-size:11px;color:var(--muted);margin-top:4px;}
+
+/* ====== CAT PAGE ====== */
+#category-page{display:none;}
+#category-page.show{display:block;}
+.cat-hdr{background:var(--card);border-radius:10px;padding:18px 20px;margin-bottom:16px;box-shadow:var(--shadow);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.cat-hdr h2{font-family:'Playfair Display',serif;font-size:22px;font-weight:800;color:var(--blue-dark);}
+[data-theme="dark"] .cat-hdr h2{color:#7eb3ff;}
+.back-btn{background:var(--blue-light);color:var(--blue);border:none;padding:8px 16px;border-radius:6px;cursor:pointer;font-weight:700;font-size:13px;font-family:'Noto Sans Bengali',sans-serif;display:flex;align-items:center;gap:5px;}
+.cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+@media(max-width:700px){.cat-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:400px){.cat-grid{grid-template-columns:1fr;}}
+.cac{background:var(--card);border-radius:8px;overflow:hidden;border:1px solid var(--border);cursor:pointer;transition:box-shadow .2s,transform .2s;}
+.cac:hover{box-shadow:0 6px 20px rgba(10,61,143,.14);transform:translateY(-2px);}
+.cac-img{height:130px;display:flex;align-items:center;justify-content:center;font-size:40px;background:linear-gradient(135deg,var(--blue-dark),var(--blue-mid));position:relative;}
+.cac-img::after{content:'';position:absolute;inset:0;background:rgba(0,0,0,.1);}
+.cac-body{padding:11px 13px;}
+.cac-cat{font-size:10px;font-weight:800;color:var(--blue-mid);text-transform:uppercase;letter-spacing:.8px;margin-bottom:5px;}
+.cac-body h4{font-family:'Lora',serif;font-size:13px;font-weight:600;line-height:1.44;margin-bottom:5px;}
+.cac-body .t{font-size:11px;color:var(--muted);}
+
+/* ====== ARTICLE PAGE ====== */
+#article-page{display:none;}
+#article-page.show{display:block;}
+.art-wrap{padding:18px 0;}
+.art-box{background:var(--card);border-radius:10px;padding:24px;box-shadow:var(--shadow);max-width:780px;margin:0 auto;}
+@media(max-width:480px){.art-box{padding:16px 14px;}}
+.art-back{background:var(--blue-light);color:var(--blue);border:none;padding:7px 14px;border-radius:6px;cursor:pointer;font-weight:700;font-size:13px;font-family:'Noto Sans Bengali',sans-serif;margin-bottom:18px;display:inline-flex;align-items:center;gap:5px;}
+.art-catbadge{font-size:11px;font-weight:800;color:var(--blue-mid);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+.art-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:800;line-height:1.4;margin-bottom:10px;}
+@media(max-width:480px){.art-title{font-size:19px;}}
+.art-meta{font-size:12px;color:var(--muted);margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--border);display:flex;gap:14px;flex-wrap:wrap;}
+.art-img{width:100%;height:260px;background:linear-gradient(135deg,var(--blue-dark),var(--blue-mid));border-radius:8px;margin-bottom:18px;display:flex;align-items:center;justify-content:center;font-size:56px;overflow:hidden;}
+.art-body{font-family:'Lora',serif;font-size:16px;line-height:1.88;color:var(--text);}
+.art-body p{margin-bottom:14px;}
+.art-share{margin-top:22px;padding-top:16px;border-top:1px solid var(--border);}
+.art-share h5{font-size:13px;font-weight:700;margin-bottom:10px;color:var(--muted);}
+.art-share-row{display:flex;gap:8px;flex-wrap:wrap;}
+
+/* ====== SECTION BLOCK ====== */
+.sblock{background:var(--card);border-radius:10px;padding:16px;margin-bottom:20px;box-shadow:var(--shadow);}
+
+/* ====== CARDS ====== */
+.g2{display:grid;grid-template-columns:1.2fr 1fr;gap:14px;}
+@media(max-width:600px){.g2{grid-template-columns:1fr;}}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+@media(max-width:600px){.g3{grid-template-columns:1fr;}}
+.ncard{border-radius:8px;overflow:hidden;border:1px solid var(--border);cursor:pointer;transition:box-shadow .2s,transform .2s;background:var(--card);}
+.ncard:hover{box-shadow:0 6px 20px rgba(10,61,143,.14);transform:translateY(-2px);}
+.ni{position:relative;overflow:hidden;}
+.ni-h1{height:200px;}
+.ni-h2{height:110px;}
+.ni-h3{height:130px;}
+.ni-sports1{background:linear-gradient(135deg,#1a6b33,#52be80);}
+.ni-sports2{background:linear-gradient(135deg,#1a5276,#2e86c1);}
+.ni-wb{background:linear-gradient(135deg,#4a235a,#9b59b6);}
+.ni::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.55),transparent);}
+.ni-icon{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:38px;opacity:.28;z-index:1;}
+.ni-label{position:absolute;bottom:0;left:0;right:0;padding:9px 11px;z-index:2;}
+.ni-label .src{font-size:9px;color:rgba(255,255,255,.75);font-weight:600;letter-spacing:.5px;}
+.ni-label .stitle{font-size:12px;color:#fff;font-weight:700;line-height:1.3;margin-top:1px;}
+.nb{padding:11px 13px 13px;}
+.nc{font-size:10px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;margin-bottom:5px;}
+.cc-sp{color:#27ae60;}.cc-wb{color:var(--blue-mid);}
+.nb h4{font-family:'Lora',serif;font-size:13.5px;font-weight:600;line-height:1.44;margin-bottom:5px;}
+.nb .t{font-size:11px;color:var(--muted);}
+
+/* Photo row */
+.pg{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;}
+@media(max-width:600px){.pg{grid-template-columns:repeat(2,1fr);}}
+.pc{border-radius:8px;overflow:hidden;cursor:pointer;transition:transform .2s;}
+.pc:hover{transform:scale(1.025);}
+.pv{height:125px;position:relative;}
+.pv1{background:linear-gradient(160deg,#1a237e,#1565c0);}
+.pv2{background:linear-gradient(160deg,#1b5e20,#388e3c);}
+.pv3{background:linear-gradient(160deg,#880e4f,#d81b60);}
+.pv4{background:linear-gradient(160deg,#e65100,#f57c00);}
+.pv::before{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.72),transparent);}
+.pv-icon{position:absolute;top:50%;left:50%;transform:translate(-50%,-60%);font-size:30px;opacity:.32;}
+.pv-text{position:absolute;bottom:0;left:0;right:0;padding:7px 9px;z-index:1;}
+.pv-text .c{font-size:9px;color:rgba(255,255,255,.72);font-weight:700;letter-spacing:.8px;text-transform:uppercase;}
+.pv-text h5{font-family:'Lora',serif;font-size:11.5px;color:#fff;font-weight:600;line-height:1.32;margin-top:2px;}
+
+/* ====== SIDEBAR ====== */
+.sw{background:var(--card);border-radius:10px;padding:15px;box-shadow:var(--shadow);}
+.pop-title{font-family:'Playfair Display',serif;font-size:17px;font-weight:800;color:var(--blue-dark);margin-bottom:12px;padding-bottom:9px;border-bottom:2.5px solid var(--blue);display:flex;align-items:center;gap:8px;}
+[data-theme="dark"] .pop-title{color:#7eb3ff;}
+.pop-title::before{content:'';display:inline-block;width:4px;height:18px;background:var(--accent);border-radius:2px;flex-shrink:0;}
+.pi{display:flex;gap:11px;padding:10px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s;border-radius:6px;}
+.pi:last-child{border-bottom:none;}
+.pi:hover{background:var(--blue-light);padding:10px 8px;margin:0 -8px;}
+.pn{font-family:'Playfair Display',serif;font-size:24px;font-weight:900;color:var(--border);line-height:1;min-width:26px;flex-shrink:0;}
+.pi:nth-child(1) .pn{color:var(--accent);}
+.pi:nth-child(2) .pn{color:var(--blue-mid);}
+.pi:nth-child(3) .pn{color:var(--gold);}
+.pt h5{font-family:'Lora',serif;font-size:13px;font-weight:600;line-height:1.42;}
+.pt .c{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.7px;margin-top:3px;}
+
+/* Share widget */
+.share-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--blue-dark);margin-bottom:10px;}
+[data-theme="dark"] .share-title{color:#7eb3ff;}
+.share-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+.sbtn{padding:10px 6px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;border:none;display:flex;align-items:center;justify-content:center;gap:6px;transition:opacity .2s,transform .15s;font-family:'Noto Sans Bengali',sans-serif;}
+.sbtn:hover{opacity:.85;transform:translateY(-1px);}
+.sbtn svg{width:15px;height:15px;flex-shrink:0;}
+.s-fb{background:#1877f2;color:#fff;}
+.s-wa{background:#25d366;color:#fff;}
+.s-tg{background:#0088cc;color:#fff;}
+.s-tw{background:#000;color:#fff;}
+
+/* Newsletter */
+.nw{background:linear-gradient(150deg,var(--blue-dark),var(--blue-mid));border-radius:10px;padding:18px;color:#fff;box-shadow:var(--shadow);}
+.nw h4{font-family:'Playfair Display',serif;font-size:16px;font-weight:800;margin-bottom:5px;}
+.nw p{font-size:12px;opacity:.8;margin-bottom:12px;line-height:1.6;}
+.nw-form{display:flex;flex-direction:column;gap:7px;}
+.nw-form input{padding:9px 12px;border-radius:6px;border:none;font-size:13px;font-family:'Noto Sans Bengali',sans-serif;outline:none;background:rgba(255,255,255,.15);color:#fff;}
+.nw-form input::placeholder{color:rgba(255,255,255,.5);}
+.nw-form button{padding:10px;border-radius:6px;border:none;background:var(--gold);color:#1a1000;font-weight:800;font-size:13px;cursor:pointer;font-family:'Noto Sans Bengali',sans-serif;}
+
+/* ====== FOOTER ====== */
+footer{background:var(--blue-dark);color:#8ba8d8;margin-top:8px;}
+.ft{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:28px;padding:32px 0 24px;}
+@media(max-width:700px){.ft{grid-template-columns:1fr 1fr;}}
+@media(max-width:420px){.ft{grid-template-columns:1fr;}}
+.fb-name{font-family:'Rajdhani',sans-serif;font-size:26px;font-weight:700;color:#fff;margin-bottom:4px;}
+.fb-name span{color:var(--accent);}
+.fb-tag{font-size:11px;color:#8ba8d8;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;}
+.fb-about{font-size:13px;line-height:1.7;margin-bottom:10px;}
+.fb-email a{color:var(--gold);font-size:13px;}
+.fc h4{color:#fff;font-size:13px;font-weight:700;margin-bottom:12px;padding-bottom:7px;border-bottom:1px solid rgba(255,255,255,.1);cursor:pointer;user-select:none;}
+.fc ul{list-style:none;display:flex;flex-direction:column;gap:7px;}
+.fc ul li a{font-size:13px;color:#8ba8d8;transition:color .2s;cursor:pointer;}
+.fc ul li a:hover{color:var(--gold);}
+.col-body{display:block;}
+.fb-btm{border-top:1px solid rgba(255,255,255,.1);padding:14px 0;display:flex;justify-content:space-between;align-items:center;font-size:12px;flex-wrap:wrap;gap:7px;}
+.fb-btm a{color:var(--gold);}
+
+/* ====== MODALS ====== */
+.ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:600;align-items:center;justify-content:center;backdrop-filter:blur(3px);padding:16px;}
+.ov.open{display:flex;}
+.md{background:var(--card);border-radius:14px;padding:26px 28px;width:100%;max-width:420px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.3);animation:mdin .25s ease;max-height:90vh;overflow-y:auto;}
+.md.wide{max-width:560px;}
+@keyframes mdin{from{opacity:0;transform:translateY(-14px) scale(.97)}to{opacity:1;transform:none}}
+.md-x{position:absolute;top:12px;right:14px;background:none;border:none;font-size:20px;cursor:pointer;color:#aaa;line-height:1;}
+.md h3{font-family:'Playfair Display',serif;font-size:19px;font-weight:800;color:var(--blue-dark);margin-bottom:4px;}
+[data-theme="dark"] .md h3{color:#7eb3ff;}
+.md .sub{font-size:12px;color:var(--muted);margin-bottom:18px;}
+.fg{margin-bottom:12px;}
+.fg label{display:block;font-size:12px;font-weight:700;margin-bottom:4px;color:var(--text);}
+.fg input,.fg textarea{width:100%;padding:9px 13px;border:1.5px solid var(--border);border-radius:7px;font-size:14px;font-family:'Noto Sans Bengali',sans-serif;outline:none;transition:border-color .2s;background:var(--card);color:var(--text);}
+.fg input:focus,.fg textarea:focus{border-color:var(--blue);}
+.fg textarea{min-height:75px;resize:vertical;}
+.sub-btn{width:100%;padding:11px;background:var(--blue);color:#fff;border:none;border-radius:7px;font-size:14px;font-weight:800;cursor:pointer;font-family:'Noto Sans Bengali',sans-serif;transition:background .2s;margin-top:3px;}
+.sub-btn:hover{background:var(--blue-dark);}
+.sw-lnk{text-align:center;font-size:12px;color:var(--muted);margin-top:11px;}
+.sw-lnk a{color:var(--blue);font-weight:700;cursor:pointer;}
+.page-content{font-size:13.5px;line-height:1.8;color:var(--text);}
+.page-content h4{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--blue-dark);margin:14px 0 5px;}
+[data-theme="dark"] .page-content h4{color:#7eb3ff;}
+
+/* ====== ADMIN PANEL ====== */
+#adm-panel{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:2000;align-items:center;justify-content:center;backdrop-filter:blur(4px);padding:12px;}
+#adm-panel.open{display:flex;}
+.adm-box{background:var(--card);border-radius:14px;padding:22px;width:100%;max-width:660px;max-height:92vh;overflow-y:auto;position:relative;box-shadow:0 24px 64px rgba(0,0,0,.35);animation:mdin .25s ease;}
+.adm-box h3{font-family:'Playfair Display',serif;font-size:17px;font-weight:800;color:var(--blue-dark);margin-bottom:2px;}
+[data-theme="dark"] .adm-box h3{color:#7eb3ff;}
+.adm-box .sub{font-size:12px;color:var(--muted);margin-bottom:16px;}
+.adm-fg{margin-bottom:12px;}
+.adm-fg label{display:block;font-size:12px;font-weight:700;margin-bottom:4px;color:var(--text);}
+.adm-fg input,.adm-fg select{width:100%;padding:9px 13px;border:1.5px solid var(--border);border-radius:7px;font-size:14px;font-family:'Noto Sans Bengali',sans-serif;outline:none;transition:border-color .2s;background:var(--card);color:var(--text);}
+.adm-fg input:focus,.adm-fg select:focus{border-color:var(--blue);}
+.adm-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+@media(max-width:500px){.adm-row{grid-template-columns:1fr;}}
+
+/* Rich Text Editor */
+.editor-toolbar{display:flex;flex-wrap:wrap;gap:4px;padding:8px;background:var(--bg);border:1.5px solid var(--border);border-bottom:none;border-radius:7px 7px 0 0;}
+.tb-btn{padding:5px 9px;border:1px solid var(--border);border-radius:5px;background:var(--card);cursor:pointer;font-size:13px;font-weight:700;color:var(--text);transition:background .15s,color .15s;line-height:1;font-family:serif;}
+.tb-btn:hover{background:var(--blue);color:#fff;border-color:var(--blue);}
+.tb-btn.active{background:var(--blue);color:#fff;border-color:var(--blue);}
+.tb-sep{width:1px;height:24px;background:var(--border);margin:0 2px;align-self:center;}
+.tb-select{padding:5px 8px;border:1px solid var(--border);border-radius:5px;background:var(--card);color:var(--text);font-size:12px;outline:none;font-family:'Noto Sans Bengali',sans-serif;}
+.editor-area{min-height:140px;padding:12px 14px;border:1.5px solid var(--border);border-top:none;border-radius:0 0 7px 7px;outline:none;font-family:'Noto Sans Bengali',sans-serif;font-size:14px;line-height:1.7;color:var(--text);background:var(--card);overflow-y:auto;}
+.editor-area:focus{border-color:var(--blue);}
+.editor-area:empty::before{content:attr(data-placeholder);color:var(--muted);pointer-events:none;}
+
+.adm-acts{display:flex;gap:8px;margin-top:10px;}
+.adm-pub{flex:1;padding:10px;background:var(--blue);color:#fff;border:none;border-radius:7px;font-size:14px;font-weight:800;cursor:pointer;font-family:'Noto Sans Bengali',sans-serif;transition:background .2s;}
+.adm-pub:hover{background:var(--blue-dark);}
+.adm-dft{padding:10px 16px;background:var(--bg);color:var(--text);border:1.5px solid var(--border);border-radius:7px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Noto Sans Bengali',sans-serif;}
+.adm-list{margin-top:18px;border-top:2px solid var(--border);padding-top:14px;}
+.adm-list h4{font-size:13px;font-weight:800;color:var(--blue-dark);margin-bottom:9px;}
+[data-theme="dark"] .adm-list h4{color:#7eb3ff;}
+.adm-item{display:flex;justify-content:space-between;align-items:center;padding:8px 11px;background:var(--bg);border-radius:7px;margin-bottom:6px;gap:7px;}
+.adm-item .at{font-size:13px;font-weight:600;flex:1;color:var(--text);}
+.adm-item .ac{font-size:10px;font-weight:700;text-transform:uppercase;color:var(--blue-mid);background:var(--blue-light);padding:2px 7px;border-radius:20px;white-space:nowrap;}
+.adm-item .ad{background:none;border:none;color:#e74c3c;cursor:pointer;font-size:15px;}
+.adm-x{position:absolute;top:12px;right:14px;background:none;border:none;font-size:20px;cursor:pointer;color:#aaa;}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="container header-inner">
+    <div class="logo" id="logo-tap">
+      <div class="logo-icon">
+        <svg viewBox="0 0 50 50" fill="none">
+          <rect width="50" height="50" rx="11" fill="#0a3d8f"/>
+          <polygon points="11,40 19,13 25,28 31,15 39,40" fill="none" stroke="white" stroke-width="2.8" stroke-linejoin="round" stroke-linecap="round"/>
+          <circle cx="25" cy="8" r="3.5" fill="#e8171f"/>
+          <line x1="8" y1="44" x2="42" y2="44" stroke="#d4a017" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="logo-text">
+        <div class="name"><span>Power</span>Bangla</div>
+        <div class="tag">সংগঠিত সংবাদ • সত্যের পথে</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="search-wrap">
+        <div class="search-box">
+          <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input type="text" id="search-input" placeholder="খবর খুঁজুন..." autocomplete="off">
+        </div>
+        <div class="search-results" id="search-results"></div>
+      </div>
+      <button class="dm-btn" onclick="toggleDark()" id="dm-btn" title="Dark/Light">🌙</button>
+      <button class="login-btn" onclick="openM('login')">
+        <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Login
+      </button>
+      <div class="ham-wrap">
+        <button class="ham-btn" id="ham-btn" onclick="openDrawer()">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav>
+  <div class="container nav-inner">
+    <a href="#" class="active" onclick="showCat('home');setActive(this);return false;">সর্বশেষ</a>
+    <a href="#" onclick="showCat('govt');setActive(this);return false;">সরকারি স্কিম</a>
+    <a href="#" onclick="showCat('wb');setActive(this);return false;">পশ্চিমবঙ্গ</a>
+    <a href="#" onclick="showCat('sports');setActive(this);return false;">খেলাধুলা</a>
+    <a href="#" onclick="showCat('education');setActive(this);return false;">শিক্ষার্থী</a>
+    <a href="#" onclick="showCat('job');setActive(this);return false;">চাকরি</a>
+    <a href="#" onclick="showCat('politics');setActive(this);return false;">রাজনীতি</a>
+    <a href="#" onclick="showCat('world');setActive(this);return false;">বিশ্ব</a>
+    <a href="#" onclick="showCat('opinion');setActive(this);return false;">মতামত</a>
+  </div>
+</nav>
+
+<!-- SIDE DRAWER OVERLAY -->
+<div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
+
+<!-- SIDE DRAWER -->
+<div class="drawer" id="drawer">
+  <div class="drawer-head">
+    <div class="dh-logo">
+      <svg width="32" height="32" viewBox="0 0 50 50" fill="none">
+        <rect width="50" height="50" rx="11" fill="rgba(255,255,255,0.15)"/>
+        <polygon points="11,40 19,13 25,28 31,15 39,40" fill="none" stroke="white" stroke-width="2.8" stroke-linejoin="round" stroke-linecap="round"/>
+        <circle cx="25" cy="8" r="3.5" fill="#ff6b6b"/>
+      </svg>
+      <div>
+        <div class="dh-name"><span>Power</span>Bangla</div>
+        <div class="dh-tag">সংগঠিত সংবাদ</div>
+      </div>
+    </div>
+    <button class="drawer-close" onclick="closeDrawer()">✕</button>
+  </div>
+
+  <div class="drawer-label">Main Menu</div>
+
+  <a class="drawer-item" onclick="showCat('home');closeDrawer();">
+    <div class="di-box dib-home">
+      <svg fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    </div>
+    <div class="di-text"><div class="di-title">Home</div><div class="di-sub">সর্বশেষ খবর</div></div>
+    <div class="di-arrow"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></div>
+  </a>
+
+  <a class="drawer-item" onclick="showCat('news');closeDrawer();">
+    <div class="di-box dib-news">
+      <svg fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8M15 18h-5M10 6h8v4h-8z"/></svg>
+    </div>
+    <div class="di-text"><div class="di-title">News</div><div class="di-sub">সব খবর</div></div>
+    <div class="di-arrow"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></div>
+  </a>
+
+  <a class="drawer-item" onclick="showCat('lifestyle');closeDrawer();">
+    <div class="di-box dib-lifestyle">
+      <svg fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+    </div>
+    <div class="di-text"><div class="di-title">Lifestyle</div><div class="di-sub">জীবনধারা</div></div>
+    <div class="di-arrow"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></div>
+  </a>
+
+  <a class="drawer-item" onclick="showCat('job');closeDrawer();">
+    <div class="di-box dib-job">
+      <svg fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+    </div>
+    <div class="di-text"><div class="di-title">Job</div><div class="di-sub">চাকরির খবর</div></div>
+    <div class="di-arrow"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></div>
+  </a>
+
+  <a class="drawer-item" onclick="showCat('scholarship');closeDrawer();">
+    <div class="di-box dib-scholarship">
+      <svg fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+    </div>
+    <div class="di-text"><div class="di-title">Scholarship</div><div class="di-sub">বৃত্তির খবর</div></div>
+    <div class="di-arrow"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></div>
+  </a>
+
+  <a class="drawer-item" onclick="showCat('education');closeDrawer();">
+    <div class="di-box dib-education">
+      <svg fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+    </div>
+    <div class="di-text"><div class="di-title">Education</div><div class="di-sub">শিক্ষার খবর</div></div>
+    <div class="di-arrow"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></div>
+  </a>
+
+  <a class="drawer-item" onclick="showCat('govt');closeDrawer();">
+    <div class="di-box dib-govt">
+      <svg fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><path d="M3 22V12M21 22V12M12 2 2 12h20L12 2zM9 22v-5h6v5"/></svg>
+    </div>
+    <div class="di-text"><div class="di-title">Government Schemes</div><div class="di-sub">সরকারি স্কিম</div></div>
+    <div class="di-arrow"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></div>
+  </a>
+
+  <a class="drawer-item" onclick="showCat('wb');closeDrawer();">
+    <div class="di-box dib-wb">
+      <svg fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+    </div>
+    <div class="di-text"><div class="di-title">West Bengal</div><div class="di-sub">পশ্চিমবঙ্গের খবর</div></div>
+    <div class="di-arrow"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></div>
+  </a>
+
+  <div class="drawer-label">More</div>
+
+  <a class="drawer-item" onclick="openM('about');closeDrawer();">
+    <div class="di-box dib-about">
+      <svg fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+    </div>
+    <div class="di-text"><div class="di-title">About Us</div><div class="di-sub">আমাদের সম্পর্কে</div></div>
+    <div class="di-arrow"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></div>
+  </a>
+
+  <a class="drawer-item" onclick="openM('contact');closeDrawer();">
+    <div class="di-box dib-contact">
+      <svg fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+    </div>
+    <div class="di-text"><div class="di-title">Contact</div><div class="di-sub">যোগাযোগ করুন</div></div>
+    <div class="di-arrow"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></div>
+  </a>
+
+  <div class="drawer-footer">
+    <p>© 2025 PowerBangla.in<br>Made with ❤️ for West Bengal<br><a href="mailto:masum869574@gmail.com">masum869574@gmail.com</a></p>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="container">
+
+  <!-- HOME PAGE -->
+  <div id="home-page">
+    <div class="main-layout">
+      <div>
+        <!-- HERO -->
+        <div class="hero">
+          <div class="hero-grid">
+            <div class="hero-main" onclick="openArticle(0)">
+              <div class="hero-img">
+                <div class="hero-img-bg"><svg viewBox="0 0 600 290" preserveAspectRatio="xMidYMid slice"><circle cx="150" cy="80" r="200" fill="white" opacity=".04"/><circle cx="500" cy="250" r="150" fill="white" opacity=".04"/></svg></div>
+                <div class="hero-badge">শীর্ষ খবর</div>
+                <div class="hero-grad"></div>
+                <div class="hero-caption">
+                  <h3 id="hero-title">কেন্দ্র সরকার ঘোষণা করল — PM Awas Yojana-তে ২ কোটি নতুন বাড়ি দেওয়া হবে গ্রামীণ পরিবারকে</h3>
+                  <div class="meta" id="hero-meta">📋 সরকারি স্কিম &nbsp;•&nbsp; আজ, সকাল ১১টা</div>
+                </div>
+              </div>
+            </div>
+            <div class="hero-side">
+              <div class="hsi" onclick="openArticle(1)"><div class="cat" style="color:var(--accent)">রাজনীতি</div><h4>লোকসভায় পাশ হল নতুন ওয়াকফ সংশোধনী বিল — বিরোধীদের ওয়াকআউট</h4><div class="t">আজ, দুপুর ২টা</div></div>
+              <div class="hsi" onclick="openArticle(2)"><div class="cat" style="color:#27ae60">খেলাধুলা</div><h4>IPL 2025 — KKR চমকে দিল MI-কে, ৪৭ রানে বড় জয়</h4><div class="t">গতকাল রাত</div></div>
+              <div class="hsi" onclick="openArticle(3)"><div class="cat cc-wb">পশ্চিমবঙ্গ</div><h4>কলকাতায় নতুন মেট্রো লাইন উদ্বোধন — সরাসরি এয়ারপোর্ট</h4><div class="t">আজ, সকাল ৯টা</div></div>
+              <div class="hsi" onclick="openArticle(4)"><div class="cat" style="color:#2980b9">চাকরি</div><h4>UPSC Civil Services 2025 — চূড়ান্ত ফলাফল প্রকাশিত</h4><div class="t">আজ, বিকাল ৪টা</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SPORTS -->
+        <div class="sblock">
+          <div class="sh"><h2>⚽ খেলাধুলা ও পশ্চিমবঙ্গ</h2><a href="#" onclick="showCat('sports');return false;">সব দেখুন →</a></div>
+          <div class="g2">
+            <div class="ncard" onclick="openArticle(2)">
+              <div class="ni ni-h1 ni-sports1"><div class="ni-icon">🏏</div><div class="ni-label"><div class="src">IPL 2025</div><div class="stitle">KKR vs MI হাইলাইটস</div></div></div>
+              <div class="nb"><div class="nc cc-sp">ক্রিকেট</div><h4>IPL 2025 — KKR ৪৭ রানে MI-কে হারাল, রিঙ্কু সিং-এর ৬৩ রান</h4><div class="t">গতকাল রাত ১১টা</div></div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:14px;">
+              <div class="ncard" onclick="openArticle(5)">
+                <div class="ni ni-h2 ni-sports2"><div class="ni-icon" style="font-size:28px;">⚽</div><div class="ni-label"><div class="src">ISL ফাইনাল</div><div class="stitle">Mohun Bagan চ্যাম্পিয়ন</div></div></div>
+                <div class="nb"><div class="nc cc-sp">ফুটবল</div><h4>ISL 2025 ফাইনালে Mohun Bagan চ্যাম্পিয়ন — ২-১ গোলে জয়</h4><div class="t">আজ, সকাল ৮টা</div></div>
+              </div>
+              <div class="ncard" onclick="openArticle(3)">
+                <div class="ni ni-h2 ni-wb"><div class="ni-icon" style="font-size:28px;">🚇</div><div class="ni-label"><div class="src">কলকাতা মেট্রো</div><div class="stitle">নতুন রুট চালু</div></div></div>
+                <div class="nb"><div class="nc cc-wb">পশ্চিমবঙ্গ</div><h4>কলকাতা মেট্রোর Orange Line চালু — দমদম থেকে বিমানবন্দর</h4><div class="t">আজ, সকাল ৯টা</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- WORLD & OPINION -->
+        <div class="sblock">
+          <div class="sh"><h2>🌏 বিশ্ব ও মতামত</h2><a href="#" onclick="showCat('world');return false;">সব দেখুন →</a></div>
+          <div class="pg">
+            <div class="pc" onclick="openArticle(6)"><div class="pv pv1"><div class="pv-icon">🇮🇳</div><div class="pv-text"><div class="c">বিশ্ব</div><h5>ভারত-পাকিস্তান সীমান্তে নতুন উত্তেজনা</h5></div></div></div>
+            <div class="pc" onclick="openArticle(7)"><div class="pv pv2"><div class="pv-icon">🌿</div><div class="pv-text"><div class="c">পরিবেশ</div><h5>জলবায়ু পরিবর্তনে সুন্দরবন বিপন্ন</h5></div></div></div>
+            <div class="pc" onclick="openArticle(8)"><div class="pv pv3"><div class="pv-icon">✍️</div><div class="pv-text"><div class="c">মতামত</div><h5>বাংলার শিক্ষা সংস্কার জরুরি</h5></div></div></div>
+            <div class="pc" onclick="openArticle(9)"><div class="pv pv4"><div class="pv-icon">📊</div><div class="pv-text"><div class="c">অর্থনীতি</div><h5>ভারতের GDP বৃদ্ধি ৭.২%</h5></div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SIDEBAR -->
+      <div class="sidebar">
+        <div class="sw">
+          <div class="pop-title">🔥 সর্বাধিক পঠিত</div>
+          <div class="pi" onclick="openArticle(10)"><div class="pn">1</div><div class="pt"><h5>WBCS 2025 পরীক্ষার তারিখ ঘোষণা — ১৫ জুলাই</h5><div class="c">শিক্ষার্থী</div></div></div>
+          <div class="pi" onclick="openArticle(11)"><div class="pn">2</div><div class="pt"><h5>লক্ষ্মীর ভান্ডারে এখন ₹১০০০ — কীভাবে পাবেন</h5><div class="c">সরকারি স্কিম</div></div></div>
+          <div class="pi" onclick="openArticle(2)"><div class="pn">3</div><div class="pt"><h5>IPL 2025 পয়েন্ট টেবিল — KKR শীর্ষে</h5><div class="c">খেলাধুলা</div></div></div>
+          <div class="pi" onclick="openArticle(12)"><div class="pn">4</div><div class="pt"><h5>Madhyamik 2025 ফলাফল ২০ মে</h5><div class="c">শিক্ষার্থী</div></div></div>
+          <div class="pi" onclick="openArticle(13)"><div class="pn">5</div><div class="pt"><h5>WB Police Constable 2025 — ১৫,৩০৪ পদে নিয়োগ</h5><div class="c">চাকরি</div></div></div>
+        </div>
+        <div class="sw">
+          <div class="share-title">📢 শেয়ার করুন</div>
+          <p style="font-size:12px;color:var(--muted);margin-bottom:11px;">বন্ধুদের সাথে PowerBangla শেয়ার করুন</p>
+          <div class="share-grid">
+            <button class="sbtn s-fb" onclick="doShare('facebook')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>Facebook</button>
+            <button class="sbtn s-wa" onclick="doShare('whatsapp')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>WhatsApp</button>
+            <button class="sbtn s-tg" onclick="doShare('telegram')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>Telegram</button>
+            <button class="sbtn s-tw" onclick="doShare('twitter')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>Twitter</button>
+          </div>
+        </div>
+        <div class="nw">
+          <h4>📬 Newsletter পান</h4>
+          <p>প্রতিদিনের গুরুত্বপূর্ণ খবর সরাসরি আপনার ইমেইলে।</p>
+          <div class="nw-form"><input type="email" placeholder="আপনার ইমেইল লিখুন"><button>Subscribe →</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CATEGORY PAGE -->
+  <div id="category-page">
+    <div class="cat-hdr">
+      <h2 id="cat-page-title">Category</h2>
+      <button class="back-btn" onclick="showCat('home')">← Back</button>
+    </div>
+    <div class="cat-grid" id="cat-articles-grid"></div>
+  </div>
+
+  <!-- ARTICLE PAGE -->
+  <div id="article-page">
+    <div class="art-wrap">
+      <button class="art-back" onclick="goBack()">← পিছনে যান</button>
+      <div class="art-box">
+        <div class="art-catbadge" id="art-cat"></div>
+        <h1 class="art-title" id="art-title"></h1>
+        <div class="art-meta" id="art-meta"></div>
+        <div class="art-img" id="art-img-wrap"></div>
+        <div class="art-body" id="art-body"></div>
+        <div class="art-share">
+          <h5>এই খবরটি শেয়ার করুন</h5>
+          <div class="art-share-row">
+            <button class="sbtn s-fb" onclick="doShare('facebook')" style="flex:1"><svg viewBox="0 0 24 24" width="15" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>Facebook</button>
+            <button class="sbtn s-wa" onclick="doShare('whatsapp')" style="flex:1"><svg viewBox="0 0 24 24" width="15" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>WhatsApp</button>
+            <button class="sbtn s-tg" onclick="doShare('telegram')" style="flex:1"><svg viewBox="0 0 24 24" width="15" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>Telegram</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="ft">
+      <div>
+        <div class="fb-name"><span>Power</span>Bangla</div>
+        <div class="fb-tag">সংগঠিত সংবাদ • সত্যের পথে</div>
+        <p class="fb-about">PowerBangla.in is an independent Bengali news portal for the people of West Bengal.</p>
+        <div class="fb-email"><a href="mailto:masum869574@gmail.com">📧 masum869574@gmail.com</a></div>
+      </div>
+      <div class="fc"><h4 onclick="toggleFoot(this)">Categories ▾</h4><div class="col-body"><ul><li><a onclick="showCat('news')">Latest News</a></li><li><a onclick="showCat('govt')">Government Schemes</a></li><li><a onclick="showCat('wb')">West Bengal</a></li><li><a onclick="showCat('sports')">Sports</a></li><li><a onclick="showCat('education')">Education</a></li><li><a onclick="showCat('job')">Jobs</a></li><li><a onclick="showCat('world')">World</a></li></ul></div></div>
+      <div class="fc"><h4 onclick="toggleFoot(this)">Important ▾</h4><div class="col-body"><ul><li><a onclick="showCat('scholarship')">Scholarships</a></li><li><a onclick="showCat('education')">Exam News</a></li><li><a onclick="showCat('govt')">Lakshmir Bhandar</a></li><li><a onclick="showCat('govt')">PM Kisan</a></li><li><a onclick="showCat('job')">Railway Jobs</a></li><li><a onclick="showCat('job')">SSC / WBCS</a></li></ul></div></div>
+      <div class="fc"><h4 onclick="toggleFoot(this)">About Us ▾</h4><div class="col-body"><ul><li><a onclick="openM('about')">About PowerBangla</a></li><li><a onclick="openM('editorial')">Editorial Policy</a></li><li><a onclick="openM('contact')">Contact Us</a></li><li><a onclick="openM('advertise')">Advertise</a></li><li><a onclick="openM('privacy')">Privacy Policy</a></li><li><a onclick="openM('terms')">Terms & Conditions</a></li></ul></div></div>
+    </div>
+    <div class="fb-btm"><span>© ২০২৫ PowerBangla.in — পশ্চিমবঙ্গের কণ্ঠস্বর</span><span>সত্য • নিরপেক্ষ • বিশ্বস্ত | <a href="#">powerbangla.in</a></span></div>
+  </div>
+</footer>
+
+<!-- MODALS -->
+<div class="ov" id="login-modal"><div class="md"><button class="md-x" onclick="closeM('login')">✕</button><h3>Welcome Back 👋</h3><div class="sub">Login to your PowerBangla account</div><div class="fg"><label>Email / Phone</label><input type="text" placeholder="Enter email or phone"></div><div class="fg"><label>Password</label><input type="password" placeholder="Enter password"></div><button class="sub-btn">Login</button><div class="sw-lnk">New user? <a onclick="closeM('login');openM('register')">Register</a></div></div></div>
+<div class="ov" id="register-modal"><div class="md"><button class="md-x" onclick="closeM('register')">✕</button><h3>Create Account ✍️</h3><div class="sub">Join PowerBangla family</div><div class="fg"><label>Full Name</label><input type="text" placeholder="Your name"></div><div class="fg"><label>Email</label><input type="email" placeholder="Your email"></div><div class="fg"><label>Password</label><input type="password" placeholder="Password"></div><button class="sub-btn">Register</button><div class="sw-lnk">Already registered? <a onclick="closeM('register');openM('login')">Login</a></div></div></div>
+<div class="ov" id="contact-modal"><div class="md"><button class="md-x" onclick="closeM('contact')">✕</button><h3>Contact Us 📬</h3><div class="sub">We'd love to hear from you</div><div class="fg"><label>Name</label><input type="text" placeholder="Your name"></div><div class="fg"><label>Email</label><input type="email" placeholder="Your email"></div><div class="fg"><label>Message</label><textarea placeholder="Your message..."></textarea></div><button class="sub-btn">Send →</button><div class="sw-lnk"><a href="mailto:masum869574@gmail.com">masum869574@gmail.com</a></div></div></div>
+<div class="ov" id="about-modal"><div class="md wide"><button class="md-x" onclick="closeM('about')">✕</button><h3>About PowerBangla</h3><div class="sub">Empowering Bengal with the right news</div><div class="page-content"><h4>Who We Are</h4><p>PowerBangla.in is an independent Bengali news portal dedicated to the people of West Bengal, India. Our mission is to deliver accurate, timely and relevant news in Bengali.</p><h4>Our Vision</h4><p>We believe every person deserves access to correct information in their own language. PowerBangla is committed to ensuring that right.</p><h4>Contact</h4><p>📧 masum869574@gmail.com | 🌐 powerbangla.in</p></div></div></div>
+<div class="ov" id="editorial-modal"><div class="md wide"><button class="md-x" onclick="closeM('editorial')">✕</button><h3>Editorial Policy</h3><div class="sub">Our commitment to journalism</div><div class="page-content"><h4>Independence</h4><p>PowerBangla operates independently and is not affiliated with any political party.</p><h4>Accuracy</h4><p>Every piece of news is verified through multiple sources before publication.</p><h4>Transparency</h4><p>Advertisements and sponsored content are clearly labeled and kept separate from editorial content.</p></div></div></div>
+<div class="ov" id="advertise-modal"><div class="md wide"><button class="md-x" onclick="closeM('advertise')">✕</button><h3>Advertise With Us</h3><div class="sub">Reach millions of readers across West Bengal</div><div class="page-content"><h4>Why PowerBangla?</h4><p>Reach hundreds of thousands of engaged Bengali readers. Our audience is primarily 18–45 years old.</p><h4>Ad Formats</h4><p>• Banner Ads • Sponsored Articles • Social Media Promotion • Newsletter Sponsorship</p><h4>Contact</h4><p>📧 masum869574@gmail.com</p></div></div></div>
+<div class="ov" id="privacy-modal"><div class="md wide"><button class="md-x" onclick="closeM('privacy')">✕</button><h3>Privacy Policy</h3><div class="sub">How we handle your data</div><div class="page-content"><h4>Data Collection</h4><p>We only collect your name and email when voluntarily provided. This is never sold to third parties.</p><h4>Cookies</h4><p>We use cookies to improve your experience. You may disable them in browser settings.</p><h4>Security</h4><p>All data is protected using SSL encryption.</p></div></div></div>
+<div class="ov" id="terms-modal"><div class="md wide"><button class="md-x" onclick="closeM('terms')">✕</button><h3>Terms & Conditions</h3><div class="sub">Please read carefully</div><div class="page-content"><h4>Acceptance</h4><p>By using PowerBangla.in, you agree to these terms.</p><h4>Intellectual Property</h4><p>All content is the property of PowerBangla. Reproduction without permission is prohibited.</p><h4>Disclaimer</h4><p>While we strive for accuracy, PowerBangla is not liable for any errors.</p></div></div></div>
+
+<!-- ADMIN PANEL (Logo 5x tap) -->
+<div id="adm-panel">
+  <div class="adm-box">
+    <button class="adm-x" onclick="closeAdm()">✕</button>
+    <h3>⚙️ Admin — নতুন খবর লিখুন</h3>
+    <div class="sub">শুধুমাত্র আপনি দেখতে পাচ্ছেন • Logo-তে ৫ বার ট্যাপ করুন</div>
+    <div class="adm-fg"><label>শিরোনাম *</label><input type="text" id="a-title" placeholder="খবরের শিরোনাম লিখুন"></div>
+    <div class="adm-row">
+      <div class="adm-fg"><label>বিভাগ *</label>
+        <select id="a-cat">
+          <option value="">— বিভাগ —</option>
+          <option value="news">News</option><option value="govt">Government Schemes</option>
+          <option value="wb">West Bengal</option><option value="sports">খেলাধুলা</option>
+          <option value="education">Education</option><option value="job">Job</option>
+          <option value="scholarship">Scholarship</option><option value="lifestyle">Lifestyle</option>
+          <option value="world">বিশ্ব</option><option value="opinion">মতামত</option>
+        </select>
+      </div>
+      <div class="adm-fg"><label>ছবির URL (ঐচ্ছিক)</label><input type="url" id="a-img" placeholder="https://..."></div>
+    </div>
+    <div class="adm-fg"><label>সারসংক্ষেপ</label><input type="text" id="a-summary" placeholder="এক লাইনে সারসংক্ষেপ"></div>
+    <div class="adm-fg">
+      <label>সম্পূর্ণ খবর *</label>
+      <div class="editor-toolbar">
+        <button class="tb-btn" onclick="fmt('bold')" title="Bold"><b>B</b></button>
+        <button class="tb-btn" onclick="fmt('italic')" title="Italic"><i>I</i></button>
+        <button class="tb-btn" onclick="fmt('underline')" title="Underline"><u>U</u></button>
+        <div class="tb-sep"></div>
+        <button class="tb-btn" onclick="fmt('strikeThrough')" title="Strikethrough"><s>S</s></button>
+        <div class="tb-sep"></div>
+        <button class="tb-btn" onclick="fmtBlock('h2')" title="Heading">H2</button>
+        <button class="tb-btn" onclick="fmtBlock('h3')" title="Subheading">H3</button>
+        <button class="tb-btn" onclick="fmtBlock('p')" title="Paragraph">P</button>
+        <div class="tb-sep"></div>
+        <button class="tb-btn" onclick="fmt('insertUnorderedList')" title="Bullet List">• List</button>
+        <button class="tb-btn" onclick="fmt('insertOrderedList')" title="Numbered List">1. List</button>
+        <div class="tb-sep"></div>
+        <button class="tb-btn" onclick="fmt('justifyLeft')" title="Left">↤</button>
+        <button class="tb-btn" onclick="fmt('justifyCenter')" title="Center">↔</button>
+        <button class="tb-btn" onclick="fmt('justifyRight')" title="Right">↦</button>
+        <div class="tb-sep"></div>
+        <select class="tb-select" onchange="fmtSize(this.value)">
+          <option value="">Size</option>
+          <option value="1">Small</option>
+          <option value="3">Normal</option>
+          <option value="5">Large</option>
+          <option value="7">XL</option>
+        </select>
+        <div class="tb-sep"></div>
+        <button class="tb-btn" onclick="fmt('removeFormat')" title="Clear">✕ Clear</button>
+      </div>
+      <div class="editor-area" id="editor-area" contenteditable="true" data-placeholder="এখানে সম্পূর্ণ খবর বাংলায় লিখুন... Bold, Italic, List সব করতে পারবেন উপরের toolbar থেকে।"></div>
+    </div>
+    <div class="adm-acts">
+      <button class="adm-pub" onclick="publishArt()">✅ প্রকাশ করুন</button>
+      <button class="adm-dft" onclick="saveDraft()">💾 Draft</button>
+    </div>
+    <div class="adm-list">
+      <h4>প্রকাশিত খবর (<span id="art-count">3</span>)</h4>
+      <div id="adm-art-list">
+        <div class="adm-item"><span class="at">PM Awas Yojana-তে ২ কোটি নতুন বাড়ির ঘোষণা</span><span class="ac">Govt</span><button class="ad" onclick="this.closest('.adm-item').remove();updateCount()">🗑</button></div>
+        <div class="adm-item"><span class="at">IPL 2025 — KKR ৪৭ রানে MI-কে হারাল</span><span class="ac">Sports</span><button class="ad" onclick="this.closest('.adm-item').remove();updateCount()">🗑</button></div>
+        <div class="adm-item"><span class="at">Mohun Bagan ISL 2025 চ্যাম্পিয়ন</span><span class="ac">Sports</span><button class="ad" onclick="this.closest('.adm-item').remove();updateCount()">🗑</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== ARTICLES =====
+const articles=[
+  {id:0,cat:'govt',catLabel:'সরকারি স্কিম',title:'কেন্দ্র সরকার ঘোষণা করল — PM Awas Yojana-তে ২ কোটি নতুন বাড়ি দেওয়া হবে গ্রামীণ পরিবারকে',time:'আজ, সকাল ১১টা',icon:'🏠',body:'<p>কেন্দ্রীয় সরকার একটি ঐতিহাসিক ঘোষণায় জানিয়েছে যে PM Awas Yojana (Gramin) প্রকল্পে আগামী দুই বছরে ২ কোটি নতুন বাড়ি তৈরি করা হবে।</p><p>পশ্চিমবঙ্গ সহ সব রাজ্যে এই প্রকল্পের তালিকা নতুনভাবে তৈরি করা হবে। আবেদনের জন্য pmayg.nic.in ওয়েবসাইটে যান।</p>'},
+  {id:1,cat:'politics',catLabel:'রাজনীতি',title:'লোকসভায় পাশ হল নতুন ওয়াকফ সংশোধনী বিল — বিরোধীদের ওয়াকআউট',time:'আজ, দুপুর ২টা',icon:'🏛️',body:'<p>লোকসভায় আজ ওয়াকফ সংশোধনী বিল পাশ হয়েছে। বিলটি পাশ হওয়ার সময় বিরোধী দলগুলো ওয়াকআউট করে।</p>'},
+  {id:2,cat:'sports',catLabel:'খেলাধুলা',title:'IPL 2025 — KKR ৪৭ রানে MI-কে হারাল, রিঙ্কু সিং-এর ঝড়ো ৬৩ রান',time:'গতকাল রাত ১১টা',icon:'🏏',body:'<p>IPL 2025-এ KKR মুম্বই ইন্ডিয়ান্সকে ৪৭ রানে হারিয়েছে। রিঙ্কু সিং মাত্র ৩৮ বলে ৬৩ রান করেন।</p>'},
+  {id:3,cat:'wb',catLabel:'পশ্চিমবঙ্গ',title:'কলকাতায় নতুন মেট্রো লাইন উদ্বোধন — যাত্রীরা এখন সরাসরি এয়ারপোর্ট যেতে পারবেন',time:'আজ, সকাল ৯টা',icon:'🚇',body:'<p>কলকাতা মেট্রোর নতুন Orange Line আজ উদ্বোধন হয়েছে। দমদম থেকে সরাসরি বিমানবন্দরে যাওয়া যাবে।</p>'},
+  {id:4,cat:'job',catLabel:'চাকরি',title:'UPSC Civil Services 2025 — চূড়ান্ত ফলাফল প্রকাশিত',time:'আজ, বিকাল ৪টা',icon:'💼',body:'<p>UPSC Civil Services 2025-এর চূড়ান্ত ফলাফল প্রকাশিত হয়েছে। পশ্চিমবঙ্গ থেকে ১৫ জন IAS নির্বাচিত হয়েছেন।</p>'},
+  {id:5,cat:'sports',catLabel:'খেলাধুলা',title:'ISL 2025 ফাইনালে Mohun Bagan চ্যাম্পিয়ন — ২-১ গোলে জয়',time:'আজ, সকাল ৮টা',icon:'⚽',body:'<p>ISL 2025 ফাইনালে Mohun Bagan Super Giant চ্যাম্পিয়ন হয়েছে। তারা Mumbai City FC-কে ২-১ গোলে হারিয়েছে।</p>'},
+  {id:6,cat:'world',catLabel:'বিশ্ব',title:'ভারত-পাকিস্তান সীমান্তে নতুন উত্তেজনা — কূটনৈতিক বৈঠক ডাকল দিল্লি',time:'গতকাল',icon:'🌏',body:'<p>ভারত-পাকিস্তান সীমান্তে উত্তেজনার পরিপ্রেক্ষিতে নয়াদিল্লি জরুরি কূটনৈতিক বৈঠক ডেকেছে।</p>'},
+  {id:7,cat:'world',catLabel:'বিশ্ব',title:'জলবায়ু পরিবর্তনে সুন্দরবন বিপন্ন — UNESCO-র সতর্কবার্তা',time:'গতকাল',icon:'🌿',body:'<p>UNESCO জানিয়েছে জলবায়ু পরিবর্তনের কারণে সুন্দরবনের অস্তিত্ব বিপন্ন। ২০৫০ সালের মধ্যে বড় অংশ জলের তলায় যেতে পারে।</p>'},
+  {id:8,cat:'opinion',catLabel:'মতামত',title:'বাংলার শিক্ষা ব্যবস্থায় সংস্কার এখন সময়ের দাবি',time:'আজ',icon:'✍️',body:'<p>পশ্চিমবঙ্গের শিক্ষা ব্যবস্থায় বড় সংস্কার দরকার। শিক্ষকদের প্রশিক্ষণ, পাঠ্যক্রম আধুনিকীকরণ এখনই দরকার।</p>'},
+  {id:9,cat:'world',catLabel:'অর্থনীতি',title:'ভারতের GDP বৃদ্ধির হার ৭.২% — বিশ্বের দ্রুততম অর্থনীতি',time:'গতকাল',icon:'📊',body:'<p>IMF জানিয়েছে ভারতের GDP বৃদ্ধির হার ৭.২%, যা বিশ্বের বড় অর্থনীতিগুলোর মধ্যে সর্বোচ্চ।</p>'},
+  {id:10,cat:'education',catLabel:'শিক্ষার্থী',title:'WBCS 2025 পরীক্ষার তারিখ ঘোষণা — ১৫ জুলাই, আবেদন করুন এখনই',time:'২ ঘণ্টা আগে',icon:'🎓',body:'<p>WBCS Preliminary Examination 2025 অনুষ্ঠিত হবে ১৫ জুলাই ২০২৫। আবেদনের শেষ তারিখ ৩১ মার্চ। wbpsc.gov.in-এ আবেদন করুন।</p>'},
+  {id:11,cat:'govt',catLabel:'সরকারি স্কিম',title:'লক্ষ্মীর ভান্ডারে এখন সাধারণ শ্রেণিতে মাসে ₹১০০০',time:'৩ ঘণ্টা আগে',icon:'👩',body:'<p>লক্ষ্মীর ভান্ডার প্রকল্পে সাধারণ শ্রেণির মহিলারা এখন মাসে ₹১০০০ পাবেন। SC/ST মহিলারা পাবেন ₹১২০০।</p>'},
+  {id:12,cat:'education',catLabel:'শিক্ষার্থী',title:'Madhyamik 2025 ফলাফল ২০ মে — রেজাল্ট দেখার পদ্ধতি',time:'৪ ঘণ্টা আগে',icon:'📝',body:'<p>Madhyamik 2025 ফলাফল ২০ মে প্রকাশিত হবে। wbresults.nic.in-এ রোল নম্বর দিয়ে দেখুন।</p>'},
+  {id:13,cat:'job',catLabel:'চাকরি',title:'WB Police Constable 2025 — ১৫,৩০৪ পদে নিয়োগ',time:'৫ ঘণ্টা আগে',icon:'👮',body:'<p>WBPRB ঘোষণা করেছে Constable পদে ১৫,৩০৪ জন নিয়োগ হবে। আবেদন শেষ তারিখ ৩০ এপ্রিল। wbpolice.gov.in।</p>'}
+];
+
+let currentPage='home',lastPage='home';
+
+// ===== NAVIGATION =====
+function showCat(cat){
+  document.getElementById('home-page').style.display='none';
+  document.getElementById('category-page').style.display='none';
+  document.getElementById('article-page').style.display='none';
+  if(cat==='home'){document.getElementById('home-page').style.display='block';currentPage='home';window.scrollTo(0,0);return;}
+  const names={news:'Latest News',govt:'Government Schemes',wb:'West Bengal',sports:'খেলাধুলা',education:'Education',job:'Jobs',scholarship:'Scholarship',lifestyle:'Lifestyle',world:'বিশ্ব ও মতামত',opinion:'মতামত',politics:'রাজনীতি'};
+  const filtered=articles.filter(a=>a.cat===cat);
+  document.getElementById('cat-page-title').textContent=names[cat]||cat;
+  const grid=document.getElementById('cat-articles-grid');
+  if(filtered.length===0){grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:40px 20px;color:var(--muted);font-size:15px;">এই বিভাগে এখনো কোনো খবর নেই।<br>Admin panel থেকে যোগ করুন।</div>';}
+  else{grid.innerHTML=filtered.map(a=>`<div class="cac" onclick="openArticle(${a.id})"><div class="cac-img">${a.icon}</div><div class="cac-body"><div class="cac-cat">${a.catLabel}</div><h4>${a.title}</h4><div class="t">⏰ ${a.time}</div></div></div>`).join('');}
+  document.getElementById('category-page').style.display='block';
+  lastPage=currentPage;currentPage='cat-'+cat;window.scrollTo(0,0);
+}
+
+function openArticle(id){
+  const a=articles.find(x=>x.id===id);if(!a)return;
+  document.getElementById('home-page').style.display='none';
+  document.getElementById('category-page').style.display='none';
+  document.getElementById('article-page').style.display='block';
+  document.getElementById('art-cat').textContent=a.catLabel;
+  document.getElementById('art-title').textContent=a.title;
+  document.getElementById('art-meta').innerHTML=`<span>⏰ ${a.time}</span><span>📂 ${a.catLabel}</span>`;
+  document.getElementById('art-img-wrap').innerHTML=a.imgUrl?`<img src="${a.imgUrl}" alt="${a.title}" style="width:100%;height:260px;object-fit:cover;border-radius:8px;">`:`<span style="font-size:56px;">${a.icon}</span>`;
+  document.getElementById('art-body').innerHTML=a.body;
+  lastPage=currentPage;window.scrollTo(0,0);
+}
+
+function goBack(){
+  document.getElementById('article-page').style.display='none';
+  if(lastPage.startsWith('cat-'))showCat(lastPage.replace('cat-',''));
+  else showCat('home');
+}
+function setActive(el){document.querySelectorAll('nav a').forEach(a=>a.classList.remove('active'));el.classList.add('active');}
+
+// ===== DRAWER =====
+function openDrawer(){
+  document.getElementById('drawer').classList.add('open');
+  document.getElementById('drawer-overlay').classList.add('open');
+  document.getElementById('ham-btn').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeDrawer(){
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('drawer-overlay').classList.remove('open');
+  document.getElementById('ham-btn').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+// ===== DARK MODE =====
+function toggleDark(){
+  const h=document.documentElement;
+  const d=h.getAttribute('data-theme')==='dark';
+  h.setAttribute('data-theme',d?'light':'dark');
+  document.getElementById('dm-btn').textContent=d?'🌙':'☀️';
+}
+
+// ===== SEARCH =====
+document.getElementById('search-input').addEventListener('input',function(){
+  const q=this.value.trim().toLowerCase();
+  const res=document.getElementById('search-results');
+  if(q.length<2){res.classList.remove('show');return;}
+  const found=articles.filter(a=>a.title.toLowerCase().includes(q)||a.catLabel.toLowerCase().includes(q));
+  res.innerHTML=found.length===0?'<div class="sr-empty">কোনো খবর পাওয়া যায়নি</div>':found.slice(0,5).map(a=>`<div class="sr-item" onclick="openArticle(${a.id});document.getElementById('search-results').classList.remove('show');document.getElementById('search-input').value='';"><div class="sr-cat">${a.catLabel}</div><h5>${a.title}</h5></div>`).join('');
+  res.classList.add('show');
+});
+document.addEventListener('click',function(e){if(!e.target.closest('.search-wrap'))document.getElementById('search-results').classList.remove('show');});
+
+// ===== MODALS =====
+function openM(t){document.getElementById(t+'-modal').classList.add('open');}
+function closeM(t){document.getElementById(t+'-modal').classList.remove('open');}
+document.querySelectorAll('.ov').forEach(el=>el.addEventListener('click',function(e){if(e.target===this)this.classList.remove('open');}));
+
+// ===== SHARE =====
+function doShare(p){
+  const url=encodeURIComponent('https://powerbangla.in');
+  const txt=encodeURIComponent('PowerBangla.in — পশ্চিমবঙ্গের নিজের খবর');
+  const m={facebook:`https://www.facebook.com/sharer/sharer.php?u=${url}`,whatsapp:`https://wa.me/?text=${txt}%20${url}`,telegram:`https://t.me/share/url?url=${url}&text=${txt}`,twitter:`https://twitter.com/intent/tweet?text=${txt}&url=${url}`};
+  window.open(m[p],'_blank','width=600,height=400');
+}
+
+// ===== FOOTER =====
+function toggleFoot(el){const b=el.nextElementSibling;const o=b.style.display!=='none'&&b.style.display!=='';b.style.display=o?'none':'block';el.textContent=el.textContent.replace(o?'▴':'▾',o?'▾':'▴');}
+
+// ===== RICH TEXT EDITOR =====
+function fmt(cmd){document.getElementById('editor-area').focus();document.execCommand(cmd,false,null);}
+function fmtBlock(tag){document.getElementById('editor-area').focus();document.execCommand('formatBlock',false,tag);}
+function fmtSize(size){if(!size)return;document.getElementById('editor-area').focus();document.execCommand('fontSize',false,size);}
+
+// ===== ADMIN (Logo 5x tap) =====
+let tapCount=0,tapTimer;
+document.getElementById('logo-tap').addEventListener('click',function(){
+  tapCount++;clearTimeout(tapTimer);
+  tapTimer=setTimeout(()=>tapCount=0,2000);
+  if(tapCount>=5){tapCount=0;document.getElementById('adm-panel').classList.toggle('open');}
+});
+document.addEventListener('keydown',function(e){if(e.ctrlKey&&e.shiftKey&&e.key==='A')document.getElementById('adm-panel').classList.toggle('open');});
+function closeAdm(){document.getElementById('adm-panel').classList.remove('open');}
+document.getElementById('adm-panel').addEventListener('click',function(e){if(e.target===this)closeAdm();});
+
+// ===== PUBLISH =====
+function publishArt(){
+  const title=document.getElementById('a-title').value.trim();
+  const cat=document.getElementById('a-cat').value;
+  const body=document.getElementById('editor-area').innerHTML.trim();
+  const summary=document.getElementById('a-summary').value.trim();
+  const imgUrl=document.getElementById('a-img').value.trim();
+  if(!title||!cat){alert('শিরোনাম ও বিভাগ আবশ্যক!');return;}
+  const labels={news:'News',govt:'সরকারি স্কিম',wb:'পশ্চিমবঙ্গ',sports:'খেলাধুলা',education:'Education',job:'চাকরি',scholarship:'Scholarship',lifestyle:'Lifestyle',world:'বিশ্ব',opinion:'মতামত'};
+  const newId=Date.now();
+  const now=new Date();
+  const timeStr=`আজ, ${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`;
+  articles.unshift({id:newId,cat,catLabel:labels[cat]||cat,title,summary:summary||title,time:timeStr,icon:'📰',imgUrl:imgUrl||null,body:body||`<p>${summary||title}</p>`});
+  document.getElementById('hero-title').textContent=title;
+  document.getElementById('hero-meta').innerHTML=`📂 ${labels[cat]||cat} &nbsp;•&nbsp; ${timeStr}`;
+  document.querySelector('.hero-main').setAttribute('onclick',`openArticle(${newId})`);
+  const list=document.getElementById('adm-art-list');
+  const d=document.createElement('div');d.className='adm-item';
+  d.innerHTML=`<span class="at">${title}</span><span class="ac">${labels[cat]||cat}</span><button class="ad" onclick="this.closest('.adm-item').remove();updateCount()">🗑</button>`;
+  list.prepend(d);updateCount();
+  document.getElementById('a-title').value='';document.getElementById('editor-area').innerHTML='';
+  document.getElementById('a-summary').value='';document.getElementById('a-img').value='';document.getElementById('a-cat').value='';
+  alert('✅ খবর প্রকাশিত হয়েছে!');
+}
+function updateCount(){document.getElementById('art-count').textContent=document.querySelectorAll('#adm-art-list .adm-item').length;}
+function saveDraft(){alert('💾 Draft সেভ হয়েছে!');}
+</script>
+</body>
+</html>
